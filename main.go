@@ -29,6 +29,11 @@ func withoutGoroutine(cities []string) {
 	fmt.Printf("Total temperature: %.2f degrees.\n", totalTemperature)
 }
 
+// NOTE:
+// This is the anti-pattern version of using goroutines.
+// Poor timing could result in overwritten values being rewritten by another go routine.
+// Better to use channels or Lock()/UnLock().
+
 func withGoroutine(cities []string) {
 	var totalTemperature float64
 	var wg sync.WaitGroup
@@ -45,6 +50,10 @@ func withGoroutine(cities []string) {
 	fmt.Printf("Total temperature: %.2f degrees.\n", totalTemperature)
 }
 
+// NOTE:
+// Regarding https://pkg.go.dev/sync#pkg-overview
+// Other than the Once and WaitGroup types, most are intended for use by low-level library routines.
+// Higher-level synchronization is better done via channels and communication.
 func withGoroutineAndChannel(cities []string) {
 	ch := make(chan float64)
 	for _, city := range cities {
